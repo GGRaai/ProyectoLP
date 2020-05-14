@@ -15,6 +15,7 @@ class Emol(Noticia):
         super().__init__(tit,sub,fech,aut,cuer,com,cat)
         self.subcategoria = subcat
 
+
 class La_Tercera(Noticia):
     def __init__(self,tit,sub,fech,aut,cuer,com,cat):
         super().__init__(tit,sub,fech,aut,cuer,com,cat)
