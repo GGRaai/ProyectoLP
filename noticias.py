@@ -26,6 +26,6 @@ class Bio_Bio(Noticia):
         super().__init__(tit,sub,fech,aut,cuer,com,cat)
         self.visitas = visi
 
-class Mega(Noticia):
+class Publimetro(Noticia):
     def __init__(self,tit,sub,fech,aut,cuer,cat):
         super().__init__(tit,sub,fech,aut,cuer,0,cat)

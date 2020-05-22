@@ -39,10 +39,10 @@ def formatear_emol(url):
         #print(cuerpo[i])
         i+=1
     pagina.update({'cuerpo':cuerpo})
-    print(pagina)
+    #print(pagina)
     return pagina
 
-def formatear_publimetro(url): 
+def formatear_publimetro(url):
     pagina=dict()
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
@@ -60,10 +60,10 @@ def formatear_publimetro(url):
     pagina.update({'titulo':titulo})
     pagina.update({'subtitulo':subtitulo})
     pagina.update({'autor':datos})
-    pagina.update({'Fecha':fecha})
+    pagina.update({'fecha':fecha})
     pagina.update({'cuerpo':cuerp})
     ###########
-    print(pagina)
+    #print(pagina)
     return pagina
 
 def formatear_bio_bio(url): #Faltan los comentarios
@@ -71,6 +71,9 @@ def formatear_bio_bio(url): #Faltan los comentarios
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
     #Sacar datos
+    #visitas = soup.find('span[class*="numero-visitas-"]')
+    print(visitas)
+    categoria = soup.find(class_="categoria-titulo-nota").text.strip()
     titulo = soup.find(class_="nota-titular robotos").text.strip()
     fecha_hora = soup.find(class_="nota-fecha am-hide").text.replace('\n','').replace('\r','').replace('\t','')
     autor = soup.find(class_="autor-link").text.strip()
@@ -80,12 +83,14 @@ def formatear_bio_bio(url): #Faltan los comentarios
         cuerp.append(cuerpo[i].text.replace('\n',''))
     ############
     #actualizar el diccionario
+    #pagina.update({'visitas':visitas})
+    pagina.update({'categoria':categoria})
     pagina.update({'titulo':titulo})
-    pagina.update({'Fecha y hora':fecha_hora})
+    pagina.update({'fecha y hora':fecha_hora})
     pagina.update({'autor':autor})
     pagina.update({'cuerpo':cuerp})
     ###########
-    print(pagina)
+    #print(pagina)
     return pagina
 
 def formatear_la_tercera(url): #Faltan los comentarios
@@ -93,6 +98,7 @@ def formatear_la_tercera(url): #Faltan los comentarios
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
     #Sacar datos
+    categoria = soup.find(class_="list-cat-y-tags")
     titulo = soup.find('h1')
     subtitulo = soup.find(class_="excerpt")
     datos= soup.find(class_="author d-flex-center m-bot-10")
@@ -102,10 +108,11 @@ def formatear_la_tercera(url): #Faltan los comentarios
         cuerp.append(cuerpo[i].text.strip('\n'))
     ############
     #actualizar el diccionario
+    pagina.update({'categoria':categoria.text})
     pagina.update({'titulo':titulo.text})
     pagina.update({'subtitulo':subtitulo.text})
     pagina.update({'autor y fecha':datos.text})
     pagina.update({'cuerpo':cuerp})
     ###########
-    print(pagina)
+    #print(pagina)
     return pagina
