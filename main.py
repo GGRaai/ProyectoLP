@@ -45,6 +45,15 @@ def sacar_paginas(url):
                     if(link in res):
                         continue
                     res.append(link)
+    elif("latercera" in url):
+        noticias = driver.find_elements_by_xpath("//a[@href]")
+        for i in noticias:
+            links.append(i.get_attribute("href"))
+            for link in links:
+                if("www.latercera.com" in link):
+                    if(link in res):
+                        continue
+                    res.append(link)
     return res
 
 
@@ -52,10 +61,9 @@ def sacar_paginas(url):
 
 if __name__ == "__main__":
     driver = webdriver.Chrome("C:/bin/chromedriver.exe")
-    url = ['http://www.emol.com','http://www.biobiochile.cl','http://www.publimetro.cl']
+    url = ['http://www.emol.com','http://www.biobiochile.cl','http://www.publimetro.cl','https://www.latercera.com/']
     for i in url:
         res =sacar_paginas(i)
-        print(res)
         time.sleep(10)
     if('emol' in url):
         res = format.formatear_emol(url)
