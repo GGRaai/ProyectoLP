@@ -1,6 +1,7 @@
 import requests
 import pprint
 from bs4 import BeautifulSoup
+from selenium import webdriver
 
 def formatear_emol(url):
     #TODO:
@@ -71,8 +72,7 @@ def formatear_bio_bio(url): #Faltan los comentarios
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
     #Sacar datos
-    #visitas = soup.find('span[class*="numero-visitas-"]')
-    print(visitas)
+    visitas = soup.select('span[class*="numero-visitas-"]')
     categoria = soup.find(class_="categoria-titulo-nota").text.strip()
     titulo = soup.find(class_="nota-titular robotos").text.strip()
     fecha_hora = soup.find(class_="nota-fecha am-hide").text.replace('\n','').replace('\r','').replace('\t','')
