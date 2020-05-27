@@ -20,12 +20,3 @@ class La_Tercera(Noticia):
     def __init__(self,tit,sub,fech,aut,cuer,com,cat):
         super().__init__(tit,sub,fech,aut,cuer,com,cat)
         #Agregar Pulso, La Tercera Domingo, La Tercera PM
-
-class Bio_Bio(Noticia):
-    def __init__(self,tit,sub,fech,aut,cuer,com,cat,visi):
-        super().__init__(tit,sub,fech,aut,cuer,com,cat)
-        self.visitas = visi
-
-class Publimetro(Noticia):
-    def __init__(self,tit,sub,fech,aut,cuer,cat):
-        super().__init__(tit,sub,fech,aut,cuer,0,cat)

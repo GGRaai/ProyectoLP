@@ -43,55 +43,6 @@ def formatear_emol(url):
     #print(pagina)
     return pagina
 
-def formatear_publimetro(url):
-    pagina=dict()
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, 'html.parser')
-    #Sacar datos
-    titulo = soup.find('h1').text.strip()
-    subtitulo = soup.find(class_="excerpt").text.strip()
-    datos= soup.find(class_="autorandshare__autor").text.strip()
-    fecha = soup.find(class_="autorandshare__date").text.strip()
-    cuerpo = soup.find(class_="resumen").find_all("p")
-    cuerp =[]
-    for i in range(len(cuerpo)):
-        cuerp.append(cuerpo[i].text.strip())
-    ############
-    #actualizar el diccionario
-    pagina.update({'titulo':titulo})
-    pagina.update({'subtitulo':subtitulo})
-    pagina.update({'autor':datos})
-    pagina.update({'fecha':fecha})
-    pagina.update({'cuerpo':cuerp})
-    ###########
-    #print(pagina)
-    return pagina
-
-def formatear_bio_bio(url): #Faltan los comentarios
-    pagina=dict()
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, 'html.parser')
-    #Sacar datos
-    visitas = soup.select('span[class*="numero-visitas-"]')
-    categoria = soup.find(class_="categoria-titulo-nota").text.strip()
-    titulo = soup.find(class_="nota-titular robotos").text.strip()
-    fecha_hora = soup.find(class_="nota-fecha am-hide").text.replace('\n','').replace('\r','').replace('\t','')
-    autor = soup.find(class_="autor-link").text.strip()
-    cuerpo = soup.find(class_="nota-contenido text-19 robotos").find_all("p")
-    cuerp =[]
-    for i in range(len(cuerpo)):
-        cuerp.append(cuerpo[i].text.replace('\n',''))
-    ############
-    #actualizar el diccionario
-    #pagina.update({'visitas':visitas})
-    pagina.update({'categoria':categoria})
-    pagina.update({'titulo':titulo})
-    pagina.update({'fecha y hora':fecha_hora})
-    pagina.update({'autor':autor})
-    pagina.update({'cuerpo':cuerp})
-    ###########
-    #print(pagina)
-    return pagina
 
 def formatear_la_tercera(url): #Faltan los comentarios
     pagina=dict()
