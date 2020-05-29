@@ -2,8 +2,9 @@ import tweepy
 
 
 #Access keys
-file = open('data.txt','r')
+file = open('data.txt','r') #archivo con credenciales
 data={}
+#crea un diccionario con llaves que necesitamos para ingresar a la API
 for line in file:
     (x,y) = line.strip().split('=')
     data[x] = y
