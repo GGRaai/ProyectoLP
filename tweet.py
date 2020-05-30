@@ -17,5 +17,6 @@ auth.set_access_token(data['access_token'],data['access_token_secret'])#Meterse 
 api = tweepy.API(auth)
 trends1 = api.trends_place(woeid)#conseguir trends de chile
 
-trends = list([trend['name'] for trend in trends1[0]['trends']])#Conseguir los nombres de las trends
-print(trends)
+trends = list([trend for trend in trends1[0]['trends']])#Conseguir los nombres de las trends
+for trend in trends:
+    print(trend)
