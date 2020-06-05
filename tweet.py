@@ -31,7 +31,3 @@ for trend in trends: #revisa cada una de las trends
     fechas_tweets = []#Vuelve a vacia la lista, para asi tener una distinta por cada trend
     textos.update({q:textos_tweets})
     textos_tweets = []
-
-
-print(fechas)
-print(textos)

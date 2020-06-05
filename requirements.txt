@@ -1,0 +1,8 @@
+requests
+selenium
+abc
+bs4
+matplotlib
+numpy
+tweepy
+spanish_sentiment_analysis
