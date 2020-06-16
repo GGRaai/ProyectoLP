@@ -1,5 +1,4 @@
 import requests
-import pprint
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
@@ -13,14 +12,7 @@ def formatear_emol(url):
     #Sacar datos
     titulo = soup.find('h1')
     subtitulo = soup.find('h2')
-    datos = soup.find(class_="info-notaemol-porfecha")
-    comentarios = soup.find("span",class_="num_comentarios")
     categoria = soup.find(class_="tit_emol_des_2015")
-    subcategoria = soup.find(class_="select")
-    ############
-    #Arreglar el autor/fecha
-    datos_n = datos.text.strip()
-    ############
     cuerpo = soup.find(id="cuDetalle_cuTexto_textoNoticia").find_all('div')
     cuerpo_n = []
     for parrafo in cuerpo:
@@ -38,10 +30,8 @@ def formatear_emol(url):
     #actualizar el diccionario
     pagina.update({'titulo':titulo.text})
     pagina.update({'subtitulo':subtitulo.text})
-    pagina.update({'autor y fecha':datos_n})
     pagina.update({'cuerpo':cuerpo_n})
     pagina.update({'categoria':categoria.text.strip()})
-    pagina.update({'subcategoria':subcategoria.text})
     ###########
     #print(pagina)
     return pagina
@@ -59,7 +49,6 @@ def formatear_la_tercera(url): #Faltan los comentarios
         pagina.update({'subtitulo': "None"})
     else:
         pagina.update({'subtitulo':subtitulo.text})
-    datos= soup.find(class_="author d-flex-center m-bot-10")
     cuerpo = soup.find('div',class_="single-content").find_all('p',class_="paragraph")
     cuerp=[]
     for i in range(len(cuerpo)):
@@ -68,7 +57,6 @@ def formatear_la_tercera(url): #Faltan los comentarios
     #actualizar el diccionario
     pagina.update({'categoria':categoria.text})
     pagina.update({'titulo':titulo.text})
-    pagina.update({'autor y fecha':datos.text})
     pagina.update({'cuerpo':cuerp})
     ###########
     #print(pagina)
