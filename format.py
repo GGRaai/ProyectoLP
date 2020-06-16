@@ -18,18 +18,25 @@ def formatear_emol(url):
     subcategoria = soup.find(class_="select")
     ############
     #Arreglar el autor/fecha
-    datos_n = datos.text.strip()
+    if(datos == None):
+        datos_n = 'None'
+    else:
+        datos_n = datos.text.strip()
     ############
-    cuerpo = soup.find(id="cuDetalle_cuTexto_textoNoticia").find_all('div')
-    cuerpo_n = []
-    for parrafo in cuerpo:
-        n_relacionadas = parrafo.find(class_="flo_left cont_descrip_noticia")
-        if(parrafo.text in cuerpo_n):
-            continue
-        if(n_relacionadas != None):
-            continue
-        else:
-            cuerpo_n.append(parrafo.text.strip())
+    cuerpo = soup.find(id="cuDetalle_cuTexto_textoNoticia")
+    if(cuerpo == None):
+        cuerpo_n = ['None']
+    else:
+        cuerpo = cuerpo.find_all('div')
+        cuerpo_n = []
+        for parrafo in cuerpo:
+            n_relacionadas = parrafo.find(class_="flo_left cont_descrip_noticia")
+            if(parrafo.text in cuerpo_n):
+                continue
+            if(n_relacionadas != None):
+                continue
+            else:
+                cuerpo_n.append(parrafo.text.strip())
 
     for par in cuerpo_n:
         if(par=='\n' or par==''):
@@ -52,6 +59,10 @@ def formatear_la_tercera(url): #Faltan los comentarios
     soup = BeautifulSoup(page.content, 'html.parser')
     #Sacar datos
     categoria = soup.find(class_="list-cat-y-tags")
+    if(categoria==None):
+        pagina.update({'categoria':'None'})
+    else:
+        pagina.update({'categoria':categoria.text})
     titulo = soup.find('h1')
     subtitulo = soup.find(class_="excerpt")
     if(subtitulo == None): #Hay algunas noticias que no tienen subtitulo
@@ -59,15 +70,21 @@ def formatear_la_tercera(url): #Faltan los comentarios
     else:
         pagina.update({'subtitulo':subtitulo.text})
     datos= soup.find(class_="author d-flex-center m-bot-10")
-    cuerpo = soup.find('div',class_="single-content").find_all('p',class_="paragraph")
-    cuerp=[]
-    for i in range(len(cuerpo)):
-        cuerp.append(cuerpo[i].text.strip('\n'))
+    if(datos == None):
+        pagina.update({'autor y fecha':'None'})
+    else:
+        pagina.update({'autor y fecha':datos.text})
+    cuerpo = soup.find('div',class_="single-content")
+    if(cuerpo==None):
+        cuerp = []
+    else:
+        cuerpo = cuerpo.find_all('p',class_="paragraph")
+        cuerp=[]
+        for i in range(len(cuerpo)):
+            cuerp.append(cuerpo[i].text.strip('\n'))
     ############
     #actualizar el diccionario
-    pagina.update({'categoria':categoria.text})
     pagina.update({'titulo':titulo.text})
-    pagina.update({'autor y fecha':datos.text})
     pagina.update({'cuerpo':cuerp})
     ###########
     #print(pagina)

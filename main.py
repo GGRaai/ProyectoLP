@@ -51,12 +51,12 @@ if __name__ == "__main__":
             res = format.formatear_emol(link) #crea un diccionario con los datos de la noticia
             objetos.append(noticias.Emol(res['titulo'],res['subtitulo'],res['autor y fecha'],res['autor y fecha'],res['cuerpo'],0,res['categoria'],res['subcategoria'])) #lo agrega a la lista
         elif('latercera' in link): #revisa si es noticia de la tercera
-            if("https://www.latercera.com/encasa" in link):#manda a seccion en casa, no nos sirve
+            if("https://www.latercera.com/encasa" in link or "https://www.latercera.com/asi-empieza/" in link):#manda a seccion en casa, no nos sirve
                 continue
             res = format.formatear_la_tercera(link)
             objetos.append(noticias.La_Tercera(res['titulo'],res['subtitulo'],res['autor y fecha'],res['autor y fecha'],res['cuerpo'],0,res['categoria']))
     #loop de prueba, borrar en el producto final
     vader.sacar_valores()#tweets
-    vader.sacar_valores_noticias()#Noticias
+    vader.sacar_valores_noticias(objetos)#Noticias
     vader.graficos()#tweets
     vader.graficos_n()
