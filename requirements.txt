@@ -5,4 +5,7 @@ bs4
 matplotlib
 numpy
 tweepy
+scipy
+scikit-learn==0.19.2
 spanish_sentiment_analysis
+ipython
