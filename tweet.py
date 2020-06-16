@@ -35,4 +35,11 @@ for trend in trends:
     fechas_tweets = []#Vuelve a vacia la lista, para asi tener una distinta por cada trend
     textos.update({q:textos_tweets})
     textos_tweets = []
+<<<<<<< HEAD
     #time.sleep(30)
+=======
+
+
+print(fechas)
+print(textos)
+>>>>>>> parent of a1f739e... initial commit new branch
