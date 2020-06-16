@@ -6,6 +6,7 @@ from selenium import webdriver
 import time
 import vader
 
+
 def sacar_paginas(url):
     driver.get(url)
     links=[] #lista con todos los links de una pagina
@@ -48,14 +49,14 @@ if __name__ == "__main__":
             if("https://www.emol.com/noticias/Deportes" in link or "Grafico" in link):#Noticias de deporte generalmente son en vivos, Grafico son vivo, asi que no sirve
                 continue
             res = format.formatear_emol(link) #crea un diccionario con los datos de la noticia
-            objetos.append(noticias.Emol(res['titulo'],res['subtitulo'],res['cuerpo'],res['categoria'])) #lo agrega a la lista
+            objetos.append(noticias.Emol(res['titulo'],res['subtitulo'],res['autor y fecha'],res['autor y fecha'],res['cuerpo'],0,res['categoria'],res['subcategoria'])) #lo agrega a la lista
         elif('latercera' in link): #revisa si es noticia de la tercera
             if("https://www.latercera.com/encasa" in link):#manda a seccion en casa, no nos sirve
                 continue
             res = format.formatear_la_tercera(link)
-            objetos.append(noticias.La_Tercera(res['titulo'],res['subtitulo'],res['cuerpo'],res['categoria']))
+            objetos.append(noticias.La_Tercera(res['titulo'],res['subtitulo'],res['autor y fecha'],res['autor y fecha'],res['cuerpo'],0,res['categoria']))
     #loop de prueba, borrar en el producto final
-    vader.sacar_valores_noticias(objetos)
-    vader.sacar_valores()
-    vader.graficos()
+    vader.sacar_valores()#tweets
+    vader.sacar_valores_noticias()#Noticias
+    vader.graficos()#tweets
     vader.graficos_n()
