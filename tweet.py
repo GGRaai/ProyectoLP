@@ -25,7 +25,7 @@ trends = list([trend for trend in trends1[0]['trends']])#Conseguir los nombres d
 
 for trend in trends:
     q = trend['name']
-    tweets = tweepy.Cursor(api.search,q=q,result_type="recent").items(10)
+    tweets = tweepy.Cursor(api.search,q=q,result_type="mixed").items(10)
 
     for tweet in tweets:
         fechas_tweets.append(str(tweet.created_at))#Agrega a una lista con todas las fechas
