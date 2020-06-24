@@ -11,11 +11,19 @@ def formatear_emol(url):
     soup = BeautifulSoup(page.content, 'html.parser')
     #Sacar datos
     titulo = soup.find('h1')
+    if(titulo == None):
+        pagina.update({'titulo':'None'})
+    else:
+        pagina.update({'titulo':titulo.text})
     subtitulo = soup.find('h2')
+    if(subtitulo == None):
+        pagina.update({'subtitulo':'None'})
+    else:
+        pagina.update({'subtitulo':subtitulo.text})
     #############
     categoria = soup.find(class_="tit_emol_des_2015")
     if(categoria == None):
-        pagina.update({'Categoria':'None'})
+        pagina.update({'categoria':'None'})
     else:
         pagina.update({'categoria':categoria.text.strip()})
     #############
@@ -45,14 +53,12 @@ def formatear_emol(url):
                 continue
             else:
                 cuerpo_n.append(parrafo.text.strip())
-                
+
     if(cuerpo_n!=[]):
         for par in cuerpo_n:
             if(par=='\n' or par==''):
                 cuerpo_n.remove(par)
     #actualizar el diccionario
-    pagina.update({'titulo':titulo.text})
-    pagina.update({'subtitulo':subtitulo.text})
     pagina.update({'autor y fecha':datos_n})
     pagina.update({'cuerpo':cuerpo_n})
 

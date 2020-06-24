@@ -4,7 +4,9 @@ from bs4 import BeautifulSoup
 import requests
 from selenium import webdriver
 import time
-import vader
+#import vader
+import titulo
+from datetime import datetime,timedelta
 
 
 def sacar_paginas(url):
@@ -16,6 +18,8 @@ def sacar_paginas(url):
         for i in noticias:
             links.append(i.get_attribute("href")) #Consigue el link de la href
             for link in links:
+                if(link == "https://www.emol.com/" or link == "https://automoviles.emol.com/"):
+                    continue
                 if("www.emol.com" in link and ".html" in link or "especiales" not in link): #ve si es realmente noticia, hay muchos links a otras cosas q no nos sirven
                     if("#comentarios" in link or "wom" in link): #existen links a los comentarios, solo se los salta
                         continue
@@ -33,7 +37,25 @@ def sacar_paginas(url):
                     res.append(link)
     return res
 
-
+def horas(lista_p):
+    lista = lista_p
+    contador = 0
+    hora_LT = 0
+    for i,j in lista:
+        ahora = datetime.now()
+        contador +=1
+        lower = j.fecha.lower()
+        fecha_Lt = lower.split('hace')
+        hora_LT = fecha_Lt[1].strip().split(' ')[0]
+        if(i.fecha!='None'):
+            fecha_emol = i.fecha.split("|")
+            hora_emol = datetime.strptime(fecha_emol[1].strip(),"%H:%M")
+            print("Hora:",hora_emol.time())
+        if('minutos' in fecha_Lt[1]):
+            hora_hace_LT = ahora-timedelta(minutes = int(hora_LT))
+        else:
+            hora_hace_LT = ahora-timedelta(hours = int(hora_LT))
+        print("Hora:",hora_hace_LT.time())
 
 
 if __name__ == "__main__":
@@ -56,7 +78,9 @@ if __name__ == "__main__":
             res = format.formatear_la_tercera(link)
             objetos.append(noticias.La_Tercera(res['titulo'],res['subtitulo'],res['autor y fecha'],res['autor y fecha'],res['cuerpo'],0,res['categoria']))
     #loop de prueba, borrar en el producto final
-    vader.sacar_valores()#tweets
-    vader.sacar_valores_noticias(objetos)#Noticias
-    vader.graficos()#tweets
-    vader.graficos_n()
+    #vader.sacar_valores()#tweets
+    #vader.sacar_valores_noticias(objetos)#Noticias
+    #vader.graficos()#tweets
+    #vader.graficos_n()
+    parecidas = titulo.comparar_titulo(objetos)
+    horas(parecidas)

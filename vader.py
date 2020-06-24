@@ -52,16 +52,16 @@ def sacar_valores_noticias(lista):
     for noticia in lista:
         for cuerpo in noticia.cuerpo:
             vals = clf.predict(cuerpo)
-        total_n +=1
-        if(vals<0.1):
-            valores_n['Negativo']+=1
-            totales_n['Negativo']+=1
-        elif(vals>0.5):
-            valores_n['Positivo']+=1
-            totales_n['Positivo']+=1
-        else:
-            valores_n['Neutro']+=1
-            totales_n['Neutro']+=1
+            total_n +=1
+            if(vals<0.1):
+                valores_n['Negativo']+=1
+                totales_n['Negativo']+=1
+            elif(vals>0.5):
+                valores_n['Positivo']+=1
+                totales_n['Positivo']+=1
+            else:
+                valores_n['Neutro']+=1
+                totales_n['Neutro']+=1
 
     valores_n['Negativo'] = valores_n['Negativo']/total_n
     valores_n['Neutro'] = valores_n['Neutro']/total_n
