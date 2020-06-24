@@ -16,8 +16,8 @@ def sacar_paginas(url):
         for i in noticias:
             links.append(i.get_attribute("href")) #Consigue el link de la href
             for link in links:
-                if("www.emol.com" in link and ".html" in link): #ve si es realmente noticia, hay muchos links a otras cosas q no nos sirven
-                    if("#comentarios" in link): #existen links a los comentarios, solo se los salta
+                if("www.emol.com" in link and ".html" in link or "especiales" not in link): #ve si es realmente noticia, hay muchos links a otras cosas q no nos sirven
+                    if("#comentarios" in link or "wom" in link): #existen links a los comentarios, solo se los salta
                         continue
                     if(link in res):
                         continue
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     driver = webdriver.Chrome("C:/bin/chromedriver.exe") #Cambiar por direccion donde esta instalado chromedriver
     objetos = [] #Lista para guardar los objetos que despues van a ser analizados
     links = [] #Lista con los links para noticias
-    url = ['http://www.emol.com','https://www.latercera.com/'] #Las dos paginas que analizaremos
+    url = ['https://www.emol.com/','https://www.latercera.com/'] #Las dos paginas que analizaremos
     for i in url:
         links.extend(sacar_paginas(i)) #Agrega todos los links a noticias de una pagina a nuestra lista
         time.sleep(10) #Delay para que no explote

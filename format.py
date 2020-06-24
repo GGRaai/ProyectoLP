@@ -12,12 +12,20 @@ def formatear_emol(url):
     #Sacar datos
     titulo = soup.find('h1')
     subtitulo = soup.find('h2')
-    datos = soup.find(class_="info-notaemol-porfecha")
-    comentarios = soup.find("span",class_="num_comentarios")
+    #############
     categoria = soup.find(class_="tit_emol_des_2015")
+    if(categoria == None):
+        pagina.update({'Categoria':'None'})
+    else:
+        pagina.update({'categoria':categoria.text.strip()})
+    #############
     subcategoria = soup.find(class_="select")
+    if(subcategoria == None):
+        pagina.update({'subcategoria':'None'})
+    else:
+        pagina.update({'subcategoria':subcategoria.text})
     ############
-    #Arreglar el autor/fecha
+    datos = soup.find(class_="info-notaemol-porfecha")
     if(datos == None):
         datos_n = 'None'
     else:
@@ -25,7 +33,7 @@ def formatear_emol(url):
     ############
     cuerpo = soup.find(id="cuDetalle_cuTexto_textoNoticia")
     if(cuerpo == None):
-        cuerpo_n = ['None']
+        cuerpo_n = []
     else:
         cuerpo = cuerpo.find_all('div')
         cuerpo_n = []
@@ -37,17 +45,17 @@ def formatear_emol(url):
                 continue
             else:
                 cuerpo_n.append(parrafo.text.strip())
-
-    for par in cuerpo_n:
-        if(par=='\n' or par==''):
-            cuerpo_n.remove(par)
+                
+    if(cuerpo_n!=[]):
+        for par in cuerpo_n:
+            if(par=='\n' or par==''):
+                cuerpo_n.remove(par)
     #actualizar el diccionario
     pagina.update({'titulo':titulo.text})
     pagina.update({'subtitulo':subtitulo.text})
     pagina.update({'autor y fecha':datos_n})
     pagina.update({'cuerpo':cuerpo_n})
-    pagina.update({'categoria':categoria.text.strip()})
-    pagina.update({'subcategoria':subcategoria.text})
+
     ###########
     #print(pagina)
     return pagina
