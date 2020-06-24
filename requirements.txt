@@ -1,6 +1,5 @@
 requests
 selenium
-abc
 bs4
 matplotlib
 numpy
