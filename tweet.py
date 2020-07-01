@@ -28,7 +28,7 @@ for trend in trends:
     tweets = tweepy.Cursor(api.search,q=q,result_type="mixed").items(10)
 
     for tweet in tweets:
-        fechas_tweets.append(str(tweet.created_at))#Agrega a una lista con todas las fechas
+        fechas_tweets.append(tweet.created_at)#Agrega a una lista con todas las fechas
         textos_tweets.append(tweet.text)#Agrega a una lista con los textos
 
     fechas.update({q:fechas_tweets})#Crea un diccionario para cada trend (trend:fechas)

@@ -8,3 +8,5 @@ scipy
 scikit-learn==0.19.2
 spanish_sentiment_analysis
 ipython
+fuzzywuzzy
+python-Levenshtein

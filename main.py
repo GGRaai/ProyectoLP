@@ -4,9 +4,11 @@ from bs4 import BeautifulSoup
 import requests
 from selenium import webdriver
 import time
-#import vader
+import vader
 import titulo
 from datetime import datetime,timedelta
+from fuzzywuzzy import fuzz
+from largo import *
 
 
 def sacar_paginas(url):
@@ -32,7 +34,7 @@ def sacar_paginas(url):
             links.append(i.get_attribute("href"))
             for link in links:
                 if("www.latercera.com" in link):
-                    if(link in res or "www.latercera.com/canal" in link or "www.latercera.com/autor"in link): #revisa si es autor o canal, esos no son noticias
+                    if(link in res or "www.latercera.com/canal" in link or "www.latercera.com/autor"in link or "https://www.latercera.com/etiqueta/" in link): #revisa si es autor o canal, esos no son noticias
                         continue
                     res.append(link)
     return res
@@ -41,21 +43,43 @@ def horas(lista_p):
     lista = lista_p
     contador = 0
     hora_LT = 0
+    horas_emol = []
+    horas_lt = []
+    hora_emol = datetime.now()
+    hora_hace_LT = datetime.now()
     for i,j in lista:
         ahora = datetime.now()
         contador +=1
-        lower = j.fecha.lower()
-        fecha_Lt = lower.split('hace')
-        hora_LT = fecha_Lt[1].strip().split(' ')[0]
+        if(j.fecha!='None' or j.fecha !=['']):
+            lower = j.fecha.lower()
+            fecha_Lt = lower.split('hace')
+        if(len(fecha_Lt)==1):
+            fecha_Lt = fecha_Lt[0].split(" ")
+            hora_LT = fecha_Lt[4].strip().split(':')[0]
+        else:
+            hora_LT = fecha_Lt[1].strip().split(' ')[0]
         if(i.fecha!='None'):
             fecha_emol = i.fecha.split("|")
             hora_emol = datetime.strptime(fecha_emol[1].strip(),"%H:%M")
+            horas_emol.append(hora_emol.time())
             print("Hora:",hora_emol.time())
         if('minutos' in fecha_Lt[1]):
             hora_hace_LT = ahora-timedelta(minutes = int(hora_LT))
         else:
             hora_hace_LT = ahora-timedelta(hours = int(hora_LT))
+        horas_lt.append(hora_hace_LT.time())
         print("Hora:",hora_hace_LT.time())
+        for trend in fechas.keys():
+            for palabra in i.titulo:
+                if(fuzz.ratio(palabra,trend)>30):
+                    minimo = sorted(fechas[trend])
+                    print("Desfase entre noticia de Emol y el primer tweet fue de:",hora_emol.time()-minimo[0])
+                    break
+            for palabra in j.titulo:
+                if(fuzz.ratio(palabra,trend)>30):
+                    minimo = sorted(fechas[trend])
+                    print("Desfase entre noticia La Tercera y el primer tweet fue de:",hora_hace_LT.time()-minimo[0])
+                    break
 
 
 if __name__ == "__main__":
@@ -78,9 +102,13 @@ if __name__ == "__main__":
             res = format.formatear_la_tercera(link)
             objetos.append(noticias.La_Tercera(res['titulo'],res['subtitulo'],res['autor y fecha'],res['autor y fecha'],res['cuerpo'],0,res['categoria']))
     #loop de prueba, borrar en el producto final
-    #vader.sacar_valores()#tweets
-    #vader.sacar_valores_noticias(objetos)#Noticias
-    #vader.graficos()#tweets
-    #vader.graficos_n()
+    print("Valores tweets")
+    vader.sacar_valores()#tweets
+    print("Valores noticias")
+    vader.sacar_valores_noticias(objetos)#Noticias
+    vader.graficos()#tweets
+    vader.graficos_n()
     parecidas = titulo.comparar_titulo(objetos)
+    print("Cantidad de noticias parecidas: %d",len(parecidas))
     horas(parecidas)
+    largo(objetos)

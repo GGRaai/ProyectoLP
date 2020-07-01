@@ -78,6 +78,11 @@ def formatear_la_tercera(url): #Faltan los comentarios
     else:
         pagina.update({'categoria':categoria.text})
     titulo = soup.find('h1')
+    if(titulo == None):
+        pagina.update({'titulo':'None'})
+    else:
+        pagina.update({'titulo':titulo.text})
+
     subtitulo = soup.find(class_="excerpt")
     if(subtitulo == None): #Hay algunas noticias que no tienen subtitulo
         pagina.update({'subtitulo': "None"})
@@ -98,7 +103,6 @@ def formatear_la_tercera(url): #Faltan los comentarios
             cuerp.append(cuerpo[i].text.strip('\n'))
     ############
     #actualizar el diccionario
-    pagina.update({'titulo':titulo.text})
     pagina.update({'cuerpo':cuerp})
     ###########
     #print(pagina)
