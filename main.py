@@ -57,9 +57,10 @@ def horas(lista_p):
     for i,j in lista:
         ahora = datetime.now()
         contador +=1
-        if(j.fecha!='None' or j.fecha !=['']):
-            lower = j.fecha.lower()
-            fecha_Lt = lower.split('hace')
+        split_lt1 = lambda lt: (lt.fecha.lower()).split('hace')
+        if (j.fecha != 'None' or j.fecha != ['']):
+            fecha_Lt = split_lt1(j)
+        #plit_emol = lambda lista,e: lista.append((datetime.strptime(e.split("|")[1].strip(), "%H:%M")).time())
         if(len(fecha_Lt)==1):
             fecha_Lt = fecha_Lt[0].split(" ")
             if(len(fecha_Lt)>6):
@@ -68,10 +69,12 @@ def horas(lista_p):
         else:
             hora_LT = fecha_Lt[1].strip().split(' ')[0]
 
-        if(i.fecha!='None'):
+        if (i.fecha != 'None'):
             fecha_emol = i.fecha.split("|")
-            hora_emol = datetime.strptime(fecha_emol[1].strip(),"%H:%M")
+            hora_emol = datetime.strptime(fecha_emol[1].strip(), "%H:%M")
             horas_emol.append(hora_emol.time())
+        else:
+            continue
         if('minutos' in fecha_Lt[1]):
             hora_hace_LT = ahora-timedelta(minutes = int(hora_LT))
         else:
