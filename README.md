@@ -18,7 +18,7 @@
   ```console
   python main.py
   ```
-  o con la manera que su IDE le permita.
+    o con la manera que su IDE le permita.
 
 ## Analisis hecho:
   * Primero se hace un analisis sobre los sentimientos de los tweets y las noticias, analizando si el tweet y la noticia tiene un tono Negativo, neutro o positivo, para luego crear un grafico por noticias y un grafico por tweets con las tendencias de estos, en graficos() y graficos_n()
@@ -29,9 +29,9 @@
       * Noticias que tengan menos de 400 palabras.
       * Tweets que tengan menos de 15 palabras.
    * Medio:
-      * Noticias que tengan entre 400 y 2000 palabras.
+      * Noticias que tengan entre 400 y 800 palabras.
       * Tweets que tengan entre 15 y 24 palabras.
    * Largo:
-      * Noticias que tengan mas de 2000 palabras.
+      * Noticias que tengan mas de 800 palabras.
       * Tweets que tengan mas de 24 palabras.
   * Con esta informacion se crean 3 graficos para representar el largo de las noticias de Emol, La tercera y los tweets.

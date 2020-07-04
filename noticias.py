@@ -1,4 +1,6 @@
-from abc import ABC,abstractmethod
+import collections.abc as abc
+from abc import ABC
+
 
 class Noticia(ABC):
     def __init__(self,tit,sub,fech,aut,cuer,com,cat):

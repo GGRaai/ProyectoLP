@@ -21,23 +21,13 @@ def sacar_valores():
     global total
     global valores
     global totales
-    for trend in textos:
-        for tweet in textos[trend]:
-            vals = clf.predict(tweet)
-            total +=1
-            if(vals<0.1):
-                t_negativos.append(tweet)
-                valores['Negativo']+=1
-                totales['Negativo']+=1
-            elif(vals>0.5):
-                t_positivos.append(tweet)
-                valores['Positivo']+=1
-                totales['Positivo']+=1
-            else:
-                t_neutros.append(tweet)
-                valores['Neutro']+=1
-                totales['Neutro']+=1
-
+    t_neutros = [tweet for trend in textos for tweet in textos[trend] if clf.predict(tweet)<=0.5 and clf.predict(tweet)>=0.1]
+    t_negativos = [tweet for trend in textos for tweet in textos[trend] if clf.predict(tweet)<0.1]
+    t_positivos = [tweet for trend in textos for tweet in textos[trend] if clf.predict(tweet)>0.5]
+    totales['Neutro'] = valores["Neutro"] = len(t_neutros)
+    totales['Positivo'] = valores["Positivo"] = len(t_positivos)
+    totales['Negativo'] = valores["Negativo"] = len(t_negativos)
+    total = len(t_neutros)+len(t_positivos)+len(t_negativos)
     valores['Negativo'] = valores['Negativo']/total
     valores['Neutro'] = valores['Neutro']/total
     valores['Positivo'] = valores['Positivo']/total
@@ -49,20 +39,10 @@ def sacar_valores_noticias(lista):
     global total_n
     global valores_n
     global totales_n
-    for noticia in lista:
-        for cuerpo in noticia.cuerpo:
-            vals = clf.predict(cuerpo)
-            total_n +=1
-            if(vals<0.1):
-                valores_n['Negativo']+=1
-                totales_n['Negativo']+=1
-            elif(vals>0.5):
-                valores_n['Positivo']+=1
-                totales_n['Positivo']+=1
-            else:
-                valores_n['Neutro']+=1
-                totales_n['Neutro']+=1
-
+    valores_n['Neutro'] = totales_n['Neutro'] = len([cuerpo for noticia in lista for cuerpo in noticia.cuerpo if clf.predict(cuerpo)<=0.5 and clf.predict(cuerpo)>=0.1])
+    valores_n['Positivo'] = totales_n['Positivo'] = len([cuerpo for noticia in lista for cuerpo in noticia.cuerpo if clf.predict(cuerpo)>0.5])
+    valores_n['Negativo'] = totales_n['Negativo'] = len([cuerpo for noticia in lista for cuerpo in noticia.cuerpo if clf.predict(cuerpo)<0.1])
+    total_n = valores_n['Neutro'] + valores_n['Positivo'] + valores_n['Negativo']
     valores_n['Negativo'] = valores_n['Negativo']/total_n
     valores_n['Neutro'] = valores_n['Neutro']/total_n
     valores_n['Positivo'] = valores_n['Positivo']/total_n

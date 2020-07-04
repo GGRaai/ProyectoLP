@@ -39,6 +39,10 @@ def sacar_paginas(url):
                     res.append(link)
     return res
 
+def minute_interval(start, end):
+    return((end.hour - start.hour)*60 + end.minute - start.minute + (end.second - start.second)/60.0)
+
+
 def horas(lista_p):
     lista = lista_p
     contador = 0
@@ -47,6 +51,9 @@ def horas(lista_p):
     horas_lt = []
     hora_emol = datetime.now()
     hora_hace_LT = datetime.now()
+    print("Analisis de desfase de noticias con tweets:")
+    print("Si el tiempo es positivo, el tweet se publico X minutos despues de la noticia")
+    print("Si es negativo, el tweet se publico X minutos antes de la noticia\n\n")
     for i,j in lista:
         ahora = datetime.now()
         contador +=1
@@ -55,32 +62,32 @@ def horas(lista_p):
             fecha_Lt = lower.split('hace')
         if(len(fecha_Lt)==1):
             fecha_Lt = fecha_Lt[0].split(" ")
+            if(len(fecha_Lt)>6):
+                continue
             hora_LT = fecha_Lt[4].strip().split(':')[0]
         else:
             hora_LT = fecha_Lt[1].strip().split(' ')[0]
+
         if(i.fecha!='None'):
             fecha_emol = i.fecha.split("|")
             hora_emol = datetime.strptime(fecha_emol[1].strip(),"%H:%M")
             horas_emol.append(hora_emol.time())
-            print("Hora:",hora_emol.time())
         if('minutos' in fecha_Lt[1]):
             hora_hace_LT = ahora-timedelta(minutes = int(hora_LT))
         else:
             hora_hace_LT = ahora-timedelta(hours = int(hora_LT))
         horas_lt.append(hora_hace_LT.time())
-        print("Hora:",hora_hace_LT.time())
         for trend in fechas.keys():
             for palabra in i.titulo:
-                if(fuzz.ratio(palabra,trend)>30):
+                if(fuzz.ratio(palabra,trend)>35):
                     minimo = sorted(fechas[trend])
-                    print("Desfase entre noticia de Emol y el primer tweet fue de:",hora_emol.time()-minimo[0])
+                    print("Desfase entre noticia ",i.titulo,"y el primer tweet de la trend",trend,"fue de:",minute_interval(hora_emol.time(),minimo[0].time()),"Minutos")
                     break
             for palabra in j.titulo:
-                if(fuzz.ratio(palabra,trend)>30):
+                if(fuzz.ratio(palabra,trend)>35):
                     minimo = sorted(fechas[trend])
-                    print("Desfase entre noticia La Tercera y el primer tweet fue de:",hora_hace_LT.time()-minimo[0])
+                    print("Desfase entre noticia",j.titulo,"y el primer tweet de la trend",trend,"fue de:",minute_interval(hora_hace_LT.time(),minimo[0].time()),"Minutos")
                     break
-
 
 if __name__ == "__main__":
     driver = webdriver.Chrome("C:/bin/chromedriver.exe") #Cambiar por direccion donde esta instalado chromedriver
@@ -109,6 +116,5 @@ if __name__ == "__main__":
     vader.graficos()#tweets
     vader.graficos_n()
     parecidas = titulo.comparar_titulo(objetos)
-    print("Cantidad de noticias parecidas: %d",len(parecidas))
     horas(parecidas)
     largo(objetos)
